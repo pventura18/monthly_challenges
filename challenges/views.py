@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import Http404, HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.template.loader import render_to_string
@@ -15,7 +15,7 @@ montyly_chanllenges = {
     'september': 'Learn Django for at least 20 minutes every day!',
     'october': 'Eat no meat for 30 days!',
     'november': 'Walk for at least 20 minutes every day!',
-    'december': 'Learn Django for at least 20 minutes every day!',
+    'december': None,
 }
 
 def index(request):
@@ -41,5 +41,5 @@ def montyly_chanllenge_number(request, month):
         redirect_month = list(montyly_chanllenges.keys())[month - 1]
         redirect_path = reverse("month-challenge", args=[redirect_month])
     except:
-        return HttpResponseNotFound("This month is not supported!")
+        raise Http404()
     return HttpResponseRedirect(redirect_path)
